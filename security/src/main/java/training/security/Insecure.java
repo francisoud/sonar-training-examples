@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +25,11 @@ public class Insecure {
     // mapper.enableDefaultTyping();
     String val = mapper.readValue(obj, String.class);
     File tempDir;
-    tempDir = File.createTempFile("prefix", "suffix", new File("/mySecureDirectory"));
+    String baseDir = "/mySecureDirectory";
+    tempDir = File.createTempFile("prefix", "suffix", new File(baseDir));
     tempDir.delete();
     tempDir.mkdir();
-    Files.exists(Paths.get("/mySecureDirectory/", obj));
+    Files.exists(Paths.get(baseDir, obj));
   }
 
   public String taintedSQL(HttpServletRequest request, Connection connection) throws Exception {
